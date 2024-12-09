@@ -11,7 +11,7 @@ import * as m from "./materls";
 window.onload = function () {
   // 实例化
   const vr = new VRHall({
-    debugger: false, // 开启调试模式
+    debugger: true, // 开启调试模式
     maxSize: 20, // 画框最大尺寸
     movieHight: 2, // 移动的高度
     container: document.getElementById("root"),

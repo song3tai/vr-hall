@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "camera-controls": "^1.37.4",
+    "hold-event": "^1.1.0",
     "offset": "^0.0.1",
     "three": "^0.148.0",
     "zoomtastic": "^2.2.1"

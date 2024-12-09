@@ -1,4 +1,6 @@
 import * as THREE from "three";
+// import * as holdEvent from "hold-event";
+import * as holdEvent from "https://unpkg.com/hold-event@0.2.0/dist/hold-event.module.js";
 import CameraControls from "camera-controls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
@@ -211,6 +213,39 @@ export class VRHall {
     this._controls.mouseButtons.right = CameraControls.ACTION.NONE;
     this._controls.touches.two = CameraControls.ACTION.TOUCH_ZOOM;
     this._controls.touches.three = CameraControls.ACTION.NONE;
+
+    // 初始化键盘控制
+    const KEYCODE = {
+      W: 87,
+      A: 65,
+      S: 83,
+      D: 68,
+      ARROW_LEFT : 37,
+      ARROW_UP   : 38,
+      ARROW_RIGHT: 39,
+      ARROW_DOWN : 40,
+    };
+    
+    const cameraControls = this._controls;
+    const wKey = new holdEvent.KeyboardKeyHold( KEYCODE.W, 16.666 );
+    const aKey = new holdEvent.KeyboardKeyHold( KEYCODE.A, 16.666 );
+    const sKey = new holdEvent.KeyboardKeyHold( KEYCODE.S, 16.666 );
+    const dKey = new holdEvent.KeyboardKeyHold( KEYCODE.D, 16.666 );
+    aKey.addEventListener( 'holding', function( event ) { cameraControls.truck( - 0.01 * event.deltaTime, 0, false ) } );
+    dKey.addEventListener( 'holding', function( event ) { cameraControls.truck(   0.01 * event.deltaTime, 0, false ) } );
+    wKey.addEventListener( 'holding', function( event ) { cameraControls.forward(   0.01 * event.deltaTime, false ) } );
+    sKey.addEventListener( 'holding', function( event ) { cameraControls.forward( - 0.01 * event.deltaTime, false ) } );
+    
+    const leftKey  = new holdEvent.KeyboardKeyHold( KEYCODE.ARROW_LEFT,  100 );
+    const rightKey = new holdEvent.KeyboardKeyHold( KEYCODE.ARROW_RIGHT, 100 );
+    const upKey    = new holdEvent.KeyboardKeyHold( KEYCODE.ARROW_UP,    100 );
+    const downKey  = new holdEvent.KeyboardKeyHold( KEYCODE.ARROW_DOWN,  100 );
+    leftKey.addEventListener ( 'holding', function( event ) { cameraControls.rotate( - 0.1 * THREE.MathUtils.DEG2RAD * event.deltaTime, 0, true ) } );
+    rightKey.addEventListener( 'holding', function( event ) { cameraControls.rotate(   0.1 * THREE.MathUtils.DEG2RAD * event.deltaTime, 0, true ) } );
+    upKey.addEventListener   ( 'holding', function( event ) { cameraControls.rotate( 0, - 0.05 * THREE.MathUtils.DEG2RAD * event.deltaTime, true ) } );
+    downKey.addEventListener ( 'holding', function( event ) { cameraControls.rotate( 0,   0.05 * THREE.MathUtils.DEG2RAD * event.deltaTime, true ) } );
+    
+
 
     // 逆向控制
     this._controls.azimuthRotateSpeed = -0.5; // 方位角旋转速度。
