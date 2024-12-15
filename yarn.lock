@@ -282,6 +282,11 @@
   "resolved" "https://registry.npmmirror.com/camera-controls/-/camera-controls-1.37.4.tgz"
   "version" "1.37.4"
 
+"camera-controls@^2.0.1":
+  "integrity" "sha512-TpCujnP0vqPppTXXJRYpvIy0xq9Tro6jQf2iYUxlDpPCNxkvE/XGaTuwIxnhINOkVP/ob2CRYXtY3iVYXeMEzA=="
+  "resolved" "https://registry.npmmirror.com/camera-controls/-/camera-controls-2.9.0.tgz"
+  "version" "2.9.0"
+
 "caniuse-lite@^1.0.30001400":
   "integrity" "sha512-239m03Pqy0hwxYPYR5JwOIxRJfLTWtle9FV8zosfV5pHg+/51uD4nxcUlM8+mWWGfwKtt8lJNHnD3cWw9VZ6ow=="
   "resolved" "https://registry.npmmirror.com/caniuse-lite/-/caniuse-lite-1.0.30001442.tgz"
@@ -566,6 +571,13 @@
   dependencies:
     "pify" "^4.0.1"
     "semver" "^5.6.0"
+
+"meshwalk@^0.0.1":
+  "integrity" "sha512-8GAxyiZL0rvXB39rX/6WZOReXYyiQtEDm6UpiEEKeg1fn6QiVGKhzqbXbLJiTMc3aOnAzZX2Sbs5/Ki+FUKlfQ=="
+  "resolved" "https://registry.npmmirror.com/meshwalk/-/meshwalk-0.0.1.tgz"
+  "version" "0.0.1"
+  dependencies:
+    "camera-controls" "^2.0.1"
 
 "mime@^1.4.1":
   "integrity" "sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg=="

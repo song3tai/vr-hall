@@ -1,6 +1,7 @@
 import "./index.less";
 import * as THREE from "three";
 import VRHall from "./vrhall";
+import Robot from "./vrhall/Robot";
 // import VRHall from "./lib/vrhall.es";
 import { data } from "./pictures2";
 import Zoomtastic from "zoomtastic";
@@ -118,10 +119,11 @@ window.onload = function () {
     rotation: { x: 0, y: -Math.PI / 2, z: 0 },
     scale: 0.4,
   }).then((gltf) => {
-    gltf.scene.odata = { id: "robot" };
-    vr.addClickEvent(gltf.scene);
-    // 调用动画
-    vr.createAnimate(gltf, { animateIndex: 0, duration: 5 });
+    // gltf.scene.odata = { id: "robot" };
+    // vr.addClickEvent(gltf.scene);
+    // // 调用动画
+    // vr.createAnimate(gltf, { animateIndex: 0, duration: 5 });
+    const robot = new Robot(vr, gltf);
   });
 
   // 加载球模型
