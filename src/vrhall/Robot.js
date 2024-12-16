@@ -5,8 +5,8 @@ export default class Robot {
     this._vr = vr;
     this.gltf = gltf;
     this._options = {
-        followDistance: 5,   // 跟随距离
-        moveSpeed: 0.1,     // 降低移动速度使运动更平滑
+        followDistance: 3,   // 跟随距离
+        moveSpeed: 0.08,     // 降低移动速度使运动更平滑
         rotateSpeed: 0.1,    // 旋转速度 
         heightOffset: -1.5,     // 高度偏移量，可以微调机器人相对于相机的高度
         ...options
@@ -21,10 +21,19 @@ export default class Robot {
   }
 
   update(delta) {
-    // 获取相机位置
-    const cameraPosition = new THREE.Vector3();
-    this._vr._camera.getWorldPosition(cameraPosition);
-    
+    // 第一人称和第三人称视角的更新逻辑不一样
+    // 第一人称根据相机位置更新机器人位置 
+    // 第三人称根据玩家位置更新机器人位置
+    let cameraPosition = new THREE.Vector3();
+    if (this._vr._viewMode === 'fps') {
+      // 获取相机位置     
+      this._vr._camera.getWorldPosition(cameraPosition);
+    } else {
+      // 获取玩家位置
+      cameraPosition = this._vr._playerController.position.clone();
+      cameraPosition.y = 1.5;
+    }
+      
     // 计算机器人到相机的向量
     const robotToCamera = this.gltf.scene.position.clone().sub(cameraPosition);
     

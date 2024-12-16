@@ -2,7 +2,7 @@ import * as THREE from "three";
 // import * as holdEvent from "hold-event";
 import * as holdEvent from "https://unpkg.com/hold-event@0.2.0/dist/hold-event.module.js";
 // import * as MW from "meshwalk";
-import * as MW from '../../public/dist/meshwalk.module.js';
+import * as MW from '../3rdParty/meshwalk.module.js';
 import CameraControls from "camera-controls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
@@ -123,9 +123,11 @@ _toggleViewMode() {
       // 切换到第三人称
       this._viewMode = 'tps';
       this._viewNow = this._tpsCameraControls;
-      
+      this._playerObjectHolder.add(this._characterGltf.scene);
       // 设置相机位置到第三人称视角
       const position = this._camera.position.clone();
+      // 重置玩家位置
+      this._playerController.teleport(position.x, 0, position.z);
       this._camera.position.set(
           position.x - 5,
           position.y + 3,
@@ -136,7 +138,7 @@ _toggleViewMode() {
       // 切换到第一人称
       this._viewMode = 'fps';
       this._viewNow = this._controls;
-      
+      this._playerObjectHolder.remove(this._characterGltf.scene);
       // 设置相机位置到第一人称视角
       const playerPosition = this._playerObjectHolder.position.clone();
       this._camera.position.set(
@@ -284,10 +286,10 @@ _reflectorPlane() {
     new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
   );
   sphere.position.y = playerRadius;
-  this._playerObjectHolder.add(sphere);
+  // this._playerObjectHolder.add(sphere);
 
   this._playerController = new MW.CharacterController(this._playerObjectHolder, playerRadius);
-  this._playerController.teleport(0, 10, 0);
+  this._playerController.teleport(10, 2, 0);
   this._playerController.jumpDuration = 500;
   this._world.add(this._playerController);
 
@@ -325,19 +327,19 @@ _reflectorPlane() {
     new THREE.BoxGeometry(14, 1, 5),
     new THREE.MeshNormalMaterial()
   );
-  box.position.set(- 3, 7.5, - 13);
-  this._scene.add(box);
+  box.position.set(-5, 10, - 13);
+  // box.position.set(0, 0, 0);
+
+  // this._scene.add(box);
   this._octree.addGraphNode(box);
 
-  const characterGltf = await new GLTFLoader().loadAsync('./assets/gltfs/miku.glb');
-  this._playerObjectHolder.add(characterGltf.scene);
+  this._characterGltf = await new GLTFLoader().loadAsync('./assets/gltfs/miku.glb');
 
-  this._animationController = new MW.AnimationController(characterGltf.scene, characterGltf.animations);
+  this._animationController = new MW.AnimationController(this._characterGltf.scene, this._characterGltf.animations);
   this._animationController.motion.jump.setLoop(THREE.LoopOnce, 0);
   this._animationController.motion.slide.setLoop(THREE.LoopOnce, 0);
   this._animationController.motion.jump.clampWhenFinished = true;
   this._animationController.motion.slide.clampWhenFinished = true;
-
 
   // player motion
   this._playerController.addEventListener('startIdling', () => this._animationController.play('idle'));
@@ -347,7 +349,7 @@ _reflectorPlane() {
   this._playerController.addEventListener('startFalling', () => this._animationController.play('slide'));
   this._animationController.play('slide');
 
-  // 一开始默认第一人称视角t
+  // 一开始默认第一人称视角
   this._viewNow = this._controls;
 
 }
